@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <title>Pikachu's Dilemma</title>
+         <style>
+            #mycanvas{
+                border:2px solid black;
+                background: url("Assets/background.jpg");
+                background-size:cover;
+            }
+        
+        </style>
+    </head>
+    
+    
+    <body>
+        <canvas id="mycanvas"
+                width="1260px"
+                height ="892px"
+                style="border:5px solid orange;">
+        <script>
+            var canvas=document.getElementById("mycanvas");
+            var pen=canvas.getContext('2d');
+            function init(){
+                enemy={
+                    x:600,
+                    y:100,
+                    w:70,
+                    h:70,
+                    speedY:5,
+                };
+                 enemy2={
+                    x:350,
+                    y:400,
+                    w:70,
+                    h:70,
+                    speedY:5,
+                };
+                enemy3={
+                    x:850,
+                    y:700,
+                    w:70,
+                    h:70,
+                    speedY:5,
+                };
+                player={
+                    x:0,
+                    y:440,
+                    w:100,
+                    h:100,
+                    moving:false,
+                    speedX:5,
+                };
+                 goal={
+                    x:1100,
+                    y:440,
+                    w:100,
+                    h:100,
+                    
+                };
+                GAME_WIDTH=1260;
+                GAME_HEIGHT=892;
+                GAME_RUNNING=true;
+                 // canvas.addEventListener('keydown',function(e){
+                //console.log(e);
+                //if(e.keyCode==37){
+                  //  player.x-=10;
+                //}});
+                 canvas.addEventListener('mousedown',function(){ 
+        player.moving = true;
+    });
+    canvas.addEventListener('mouseup',function(){ 
+        player.moving = false;
+    });
+                playerImage=new Image;
+                 enemyImage=new Image;
+                 enemy2Image=new Image;
+                 enemy3Image=new Image;
+                goalImage=new Image;
+                playerImage.src="Assets/pika.png";
+                enemyImage.src="Assets/drowsy.png";
+                 enemy2Image.src="Assets/gengar.png";
+                  enemy3Image.src="Assets/download.png";
+               
+                goalImage.src="Assets/ball.png";
+              
+                
+            }
+              function isColliding(r1,r2){
+                    var x_axis=Math.abs(r1.x-r2.x)<=70;
+                     var y_axis=Math.abs(r1.y-r2.y)<=70;
+                    if(x_axis&&y_axis){
+                       
+                        return x_axis && y_axis;
+                    }
+                    
+                }
+       
+            function draw(){
+                 pen.clearRect(0,0,GAME_WIDTH,GAME_HEIGHT);
+                 //pen.fillRect(enemy.x,enemy.y,enemy.w,enemy.h);
+                 //pen.fillRect(player.x,player.y,player.w,player.h);
+                //pen.fillRect(goal.x,goal.y,goal.w,goal.h);
+                 //pen.fillRect(enemy2.x,enemy2.y,enemy2.w,enemy2.h);
+                 pen.drawImage(enemyImage,enemy.x,enemy.y,enemy.w,enemy.h); 
+    pen.drawImage(enemy2Image,enemy2.x,enemy2.y,enemy2.w,enemy2.h); 
+      pen.drawImage(enemy3Image,enemy3.x,enemy3.y,enemy3.w,enemy3.h); 
+    
+    pen.drawImage(playerImage,player.x,player.y,player.w,player.h);
+        
+    //Draw the Goal
+ pen.drawImage(goalImage,goal.x,goal.y,goal.w,goal.h);
+    
+               
+            }
+            
+            function update(){
+                enemy.y+=enemy.speedY;
+                if(enemy.y>=GAME_HEIGHT-enemy.h||enemy.y<=0){
+                    enemy.speedY*=-1;
+                }
+                 enemy2.y+=enemy2.speedY;
+                if(enemy2.y>=GAME_HEIGHT-enemy2.h||enemy2.y<=0){
+                    enemy2.speedY*=-1;
+                }
+                 enemy3.y+=enemy3.speedY;
+                if(enemy3.y>=GAME_HEIGHT-enemy3.h||enemy3.y<=0){
+                    enemy3.speedY*=-1;
+                }
+                if(player.moving==true){
+                    player.x+=player.speedX;
+                }
+                if(isColliding(player,enemy)||isColliding(player,enemy2)){
+        alert("GAME OVER !");
+        GAME_RUNNING = false;
+                }
+                 if(isColliding(player,goal)){
+        GAME_RUNNING = false;
+        alert("You Won !");
+    }
+                
+            }
+            
+            function render(){
+                draw();
+                update();
+               
+                if(GAME_RUNNING==true){
+                    
+                    window.requestAnimationFrame(render);}
+            }
+            init();
+            render();
+        </script>
+    </body>
+</html>
